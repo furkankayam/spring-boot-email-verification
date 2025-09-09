@@ -2,7 +2,7 @@
 
 <div align="center">
   <h3>⚡ Architecture Schema </h3>
-  <img src="./images/schema.png" alt="architecture schema">
+  <img src="./images/schema-1.png" alt="architecture schema">
 </div>
 
 <br>
