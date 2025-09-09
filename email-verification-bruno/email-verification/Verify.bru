@@ -1,0 +1,20 @@
+meta {
+  name: Verify
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8082/api/mail/verify?email=mefurkankaya36@gmail.com&otp=913592
+  body: none
+  auth: inherit
+}
+
+params:query {
+  email: mefurkankaya36@gmail.com
+  otp: 913592
+}
+
+settings {
+  encodeUrl: true
+}

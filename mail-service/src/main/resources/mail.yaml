@@ -1,0 +1,13 @@
+# Mail Config
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL:furkan.3436kaya@gmail.com}
+    password: ${MAIL_PASSWORD:rkcsduieamxqnlhn}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

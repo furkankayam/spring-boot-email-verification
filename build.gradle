@@ -1,0 +1,61 @@
+plugins {
+    id 'org.springframework.boot' version '3.5.3' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+    id "com.google.cloud.tools.jib" version "3.4.0" apply false
+    id 'com.diffplug.spotless' version '6.23.3' apply false
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'com.diffplug.spotless'
+    apply plugin: 'com.google.cloud.tools.jib'
+    apply from: "${rootDir}/dependencies.gradle"
+
+    group = "com.furkankayam"
+    version = "v.0.1"
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    jib {
+        container.ports = ['8080']
+        container.user = '1001'
+        from.setImage('bitnami/java:17')
+        to.setImage("${project.name}:latest")
+    }
+
+    spotless {
+        java {
+            googleJavaFormat().aosp()
+            removeUnusedImports()
+            importOrder 'java', 'jakarta', 'org', 'io', 'com', 'de.onpier', 'lombok', '\\#'
+            formatAnnotations()
+        }
+        enforceCheck = true
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+}

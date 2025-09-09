@@ -1,0 +1,20 @@
+dependencies {
+    annotationProcessor libs.lombok
+    annotationProcessor libs.lombokMapstructBinding
+    annotationProcessor libs.mapstructProcessor
+
+    implementation libs.springBootStarterWeb
+    implementation libs.springBootStarterData
+    implementation libs.springBootStarterMail
+    implementation libs.springBootStarterAmqp
+    implementation libs.springBootStarterThymeleaf
+
+    runtimeOnly libs.mysql
+
+    implementation libs.springDocOpenApi
+
+    implementation libs.lombok
+    implementation libs.mapstruct
+
+    testAnnotationProcessor libs.mapstructProcessor
+}

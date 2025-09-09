@@ -1,0 +1,4 @@
+rootProject.name = 'spring-boot-email-verification'
+
+include 'mail-service'
+include 'account-service'

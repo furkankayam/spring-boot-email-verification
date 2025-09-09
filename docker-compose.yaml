@@ -1,0 +1,82 @@
+# Services
+services:
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - my-network
+
+  # MySQL
+  mysql_db:
+    image: mysql:8.0.39
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: email_db
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+
+  # PostgreSQL
+  postgresql_db:
+    image: postgres:15.2
+    container_name: postgresql_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+  # Adminer
+  adminer_panel:
+    image: adminer:4.8.1
+    container_name: adminer_panel
+    restart: unless-stopped
+    ports:
+      - "9090:8080"
+    environment:
+      ADMINER_DESIGN: pepa-linha
+    depends_on:
+      - mysql_db
+      - postgresql_db
+    networks:
+      - my-network
+
+
+# Volumes
+volumes:
+  rabbitmq_data:
+  mysql_data:
+  postgres_data:
+
+# Networks
+networks:
+  my-network:
+    driver: bridge
